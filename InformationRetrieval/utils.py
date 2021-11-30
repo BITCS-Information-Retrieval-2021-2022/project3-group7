@@ -8,5 +8,12 @@ def genQuery():
         query[arg] = args[arg]
     """
     Maybe there are some reformatting steps.
+    {
+        "": xx,
+        "": xx,
+        "hits": [
+            
+        ]
+    }
     """
     return query

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>展示</title>
+    <style>
+
+    .spacer {
+    padding-top: 90px;
+    padding-bottom: 40px
+}
+.spacer_s {
+    padding-top: 30px;
+    padding-bottom: 10px
+}
+.form-horizontal{
+    display:block;
+    width:50%;
+    margin:0 auto;
+}
+    </style>
+</head>
+<body >
+{% extends "begin/base.html" %}
+
+{% block content %}
+<header class="text-center text-white masthead" >
+<div class="container">
+    <div class="spacer"></div>
+    <div class="row">
+        <div >
+            <h1 >Just search what you want!</h1>
+        </div>
+        <div class="spacer_s"></div>
+        <div class="form-horizontal input-append">
+{#            <form>#}
+{#                <div class="row ">#}
+                    <div class=" input-group-lg">
+                        <input class="form-control" type="text" id="search_content"/>
+                    </div>
+                    <div class="spacer_s"></div>
+                    <div class=" ">
+                        <button class="btn-success btn-lg" type="submit" onclick="search()">Search!</button>
+{#                    </div>#}
+                </div>
+{#            </form>#}
+        </div>
+    </div>
+</div>
+</header>
+    <script>
+        function search()
+        {
+            var search_content = document.getElementById("search_content").value;
+
+        }
+    </script>
+{% endblock content %}
+</body>
+</html>
