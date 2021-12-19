@@ -3,7 +3,7 @@
 ## Server
 Alibaba Cloud
 
-ip: 59.110.164.41
+ip: 182.92.1.145
 ## MongoDB
 port: 27017
 
