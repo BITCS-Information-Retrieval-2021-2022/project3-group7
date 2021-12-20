@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户</title>
+</head>
+<body>
+{% extends "begin/base.html" %}
+
+{% block content %}
+<p>所有用户</p>
+    <ul>
+    {% for user in users %}
+        <li>{{ user }}</li>
+    {% empty %}
+        <li>暂无用户！</li>
+    {% endfor %}
+    </ul>
+{% endblock content %}
+</body>
+</html>
