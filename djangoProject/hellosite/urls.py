@@ -5,5 +5,5 @@ app_name="hellosite"
 urlpatterns = [
     path('', views.hello, name='hello'),
     path('search',views.search,name='search'),
-    path(r'^users/$', views.users, name='users'),
+    path('display',views.display,name='display')
 ]

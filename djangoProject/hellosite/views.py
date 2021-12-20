@@ -7,6 +7,9 @@ def search(request):
 
 def hello(request):
     return render(request,'begin/index.html')
+    
+def display(request):
+    return render(request,'begin/display.html')
 
 def users(request):
     users=User.objects.order_by("username")
