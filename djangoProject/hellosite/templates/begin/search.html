@@ -40,7 +40,9 @@
                     </div>
                     <div class="spacer_s"></div>
                     <div class=" ">
-                        <button class="btn-success btn-lg" type="submit" onclick="search()">Search!</button>
+                        <a href="display">
+                            <button class="btn-success btn-lg" type="submit" onclick="search()" >Search!</button>
+                        </a>
 {#                    </div>#}
                 </div>
 {#            </form>#}
@@ -52,7 +54,12 @@
         function search()
         {
             var search_content = document.getElementById("search_content").value;
+            host_list = []
+            for i in range(100):
+                dic = {"id":i,"ip":"192.168.1.%s"%i}
+                host_list.append(dic)
 
+            return host_list
         }
     </script>
 {% endblock content %}
