@@ -5,12 +5,27 @@
     <title>Base</title>
      <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../static/css/main.css"
+    <link rel="stylesheet" href="../../static/css/main.css">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
 
-
+    .spacer {
+    padding-top: 90px;
+    padding-bottom: 40px
+}
+.spacer_s {
+    padding-top: 30px;
+    padding-bottom: 10px
+}
+.form-horizontal{
+    display:block;
+    width:50%;
+    margin:0 auto;
+}
+.p1 {
+  font-family: "Times New Roman", Times, serif;
+}
     </style>
 </head>
 <body style="background:url('../../static/images/back.jpg') center">
@@ -19,12 +34,12 @@
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="#">Paper</a>
+		<a class="navbar-brand" href="#" class="p1">Paper</a>
 	</div>
 	<div>
 		<ul class="nav navbar-nav">
-			<li ><a href="{% url 'hellosite:hello' %}">Home</a></li>
-			<li><a href="{% url 'hellosite:search' %}">Search</a></li>
+			<li ><a href="{% url 'hellosite:hello' %}" class="p1">Home</a></li>
+			<li><a href="{% url 'hellosite:search' %}" class="p1">Search</a></li>
 		</ul>
 	</div>
 	</div>

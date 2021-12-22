@@ -1,24 +1,102 @@
+{#{% extends "begin/base.html" %}#}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>display</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/css/main.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+
+        .spacer {
+            padding-top: 90px;
+            padding-bottom: 40px
+        }
+
+        .spacer_s {
+            padding-top: 30px;
+            padding-bottom: 10px
+        }
+
+        .form-horizontal {
+            display: block;
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        .p1 {
+            font-family: "Times New Roman", Times, serif;
+        }
+    </style>
 </head>
-<body>
-{% extends "begin/base.html" %}
-{% block content %}
-    <h1 >hello</h1>
-<!--     {%for i in host_list %}
-    <h1>{{ i }}</h1>
-    {% endfor %} -->
-    <a href="graph">
-<ul class="list-group">
-    <li class="list-group-item text-center">HTML</li>
-    <li class="list-group-item text-center">CSS</li>
-    <li class="list-group-item text-center">JavaScript</li>
-    <li class="list-group-item text-center">JQuery</li>
-</ul>
-</a>
-{% endblock content %}
+
+{#<script>#}
+{#    function  showvalf(){#}
+{#        var getval=localStorage.getItem("result");#}
+{#        var a=getval.split(" ");#}
+{#        var result="";#}
+{#        for(let i=0;i<a.length;++i)#}
+{#        {#}
+{#            var p=a[i];#}
+{#            console.log(p);#}
+{#            result+='<li class=\"list-group-item text-center> <a href="graph{{ p }}">'+a[i]+'</a></li>';#}
+{#        }#}
+{#        console.log(result);#}
+{##}
+{#        document.getElementById("result").innerHTML=result;#}
+{##}
+{#  }#}
+{#</script>#}
+<body style="background:url('../../static/images/back.jpg') center">
+{#onload="showvalf()"#}
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" class="p1">Paper</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'hellosite:hello' %}" class="p1">Home</a></li>
+                <li><a href="{% url 'hellosite:search' %}" class="p1">Search</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{#{% block content %}#}
+<header class="text-center text-white masthead">
+    <div class="container">
+        <div class="spacer_s"></div>
+        <div class="row">
+            <div>
+                <h2 class="p1"> Choose a paper to build a graph:</h2>
+            </div>
+            <div class="spacer_s"></div>
+            <div id="result" class="p1">
+                {#            <li class=\"list-group-item text-center>#}
+                {#                {{ query }}#}
+                {#            </li>#}
+{#                {% for hit in hits %}#}
+{#                    <div class="card">#}
+{#                        <h5 class="card-header">{{ }}</h5>#}
+{#                        <div class="card-body">#}
+{#                            <h5 class="card-title">Special title treatment</h5>#}
+{#                            <p class="card-text">With supporting text below as a natural lead-in to additional#}
+{#                                content.</p>#}
+{#                            <a href="#" class="btn btn-primary">Go somewhere</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+                {#            {% for m in message %}#}
+                {#                <li class=\"list-group-item text-center>#}
+                {#                    <a href="/graph/{{ m }}">{{ m }}</a>#}
+                {#                </li>#}
+                {#            {% endfor %}#}
+            </div>
+        </div>
+    </div>
+</header>
+{#{% endblock content %}#}
 </body>
 </html>

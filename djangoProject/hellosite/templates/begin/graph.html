@@ -1,0 +1,16 @@
+{% extends "begin/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Paper Graph</title>
+</head>
+<body>
+
+{% block content %}
+{% if ID %}
+    <div class="alert alert-warning">{{ ID }}</div>
+{%  endif %}
+{% endblock content %}
+</body>
+</html>

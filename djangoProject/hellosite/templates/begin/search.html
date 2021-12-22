@@ -4,62 +4,60 @@
     <meta charset="UTF-8">
     <title>展示</title>
     <style>
-
-    .spacer {
-    padding-top: 90px;
-    padding-bottom: 40px
-}
-.spacer_s {
-    padding-top: 30px;
-    padding-bottom: 10px
-}
-.form-horizontal{
-    display:block;
-    width:50%;
-    margin:0 auto;
-}
+        .check_box{
+            left:50%;
+        }
     </style>
 </head>
-<body >
+<body>
 {% extends "begin/base.html" %}
 
 {% block content %}
-<header class="text-center text-white masthead" >
-<div class="container">
-    <div class="spacer"></div>
-    <div class="row">
-        <div >
-            <h1 >Just search what you want!</h1>
-        </div>
-        <div class="spacer_s"></div>
-        <div class="form-horizontal input-append">
-{#            <form>#}
-{#                <div class="row ">#}
-                    <div class=" input-group-lg">
-                        <input class="form-control" type="text" id="search_content"/>
-                    </div>
-                    <div class="spacer_s"></div>
-                    <div class=" ">
-                        <a href="display">
-                            <button class="btn-success btn-lg" type="submit" onclick="search()" >Search!</button>
-                        </a>
-{#                    </div>#}
+    <header class="text-center text-white masthead">
+        <div class="container ">
+            <div class="spacer"></div>
+            <div class="row">
+                <div>
+                    <h1 class="p1">Just search what you want!</h1>
                 </div>
-{#            </form>#}
-        </div>
-    </div>
-</div>
-</header>
-    <script>
-        function search()
-        {
-            var search_content = document.getElementById("search_content").value;
-            host_list = []
-            for i in range(100):
-                dic = {"id":i,"ip":"192.168.1.%s"%i}
-                host_list.append(dic)
 
-            return host_list
+                <div class="spacer_s"></div>
+                <div class="form-horizontal input-append">
+                    <div class="col-lg-6">
+                        <div class="input-group input-group-lg">
+                            <input type="text" style="width: 520px" class="form-control p1" size="80" id="search_content"
+                                   placeholder="For Example: Knowledge Graph">
+                            <span class="input-group-btn">
+                        <button class="btn btn-success p1" type="submit" onclick="search()">Go!</button>
+                            </span>
+                        </div>
+                        <br>
+                        <div class="form-check col-lg-12 check_box">
+                        <input class="form-check-input"    type="radio" name="flexRadioDefault" id="default">
+                        <label class="form-check-label p1"  for="default">Default</label>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <input class="form-check-input "  type="radio" name="flexRadioDefault" id="advanced">
+                        <label class="form-check-label p1"  for="advanced">Advanced</label>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+    <script>
+        function search() {
+            let search_content = document.getElementById("search_content").value;
+            {#console.log(localStorage.getItem("result"));#}
+            {#let default_box_value=document.getElementById("default").value;#}
+            {#let advanced_box_value=document.getElementById("advanced").value;#}
+            let type;
+            if(document.getElementById("default").checked)
+                type=0;
+            else
+                type=1;
+            document.location.href = "display?start=0&wd=" + search_content+"&type="+type;
         }
     </script>
 {% endblock content %}
