@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>展示</title>
+    <title style="font-family: 'PingFang SC'">Papers Network</title>
     <style>
         .check_box{
             left:50%;
+        }
+        .label_check{
+            font-family: "Helvetica Neue";
+            font-size: 15px;
         }
     </style>
 </head>
@@ -34,10 +38,10 @@
                         <br>
                         <div class="form-check col-lg-12 check_box">
                         <input class="form-check-input"    type="radio" name="flexRadioDefault" id="default">
-                        <label class="form-check-label p1"  for="default">Default</label>
+                        <label class="form-check-label label_check"  for="default">Default</label>
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <input class="form-check-input "  type="radio" name="flexRadioDefault" id="advanced">
-                        <label class="form-check-label p1"  for="advanced">Advanced</label>
+                        <label class="form-check-label label_check"  for="advanced">Advanced</label>
                         </div>
 
                     </div>
@@ -57,7 +61,7 @@
                 type=0;
             else
                 type=1;
-            document.location.href = "display?start=0&wd=" + search_content+"&type="+type;
+            document.location.href = "display?wd=" + search_content+"&start=0"+"&type="+type;
         }
     </script>
 {% endblock content %}

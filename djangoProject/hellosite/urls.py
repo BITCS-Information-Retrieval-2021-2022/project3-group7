@@ -7,5 +7,5 @@ urlpatterns = [
     path('search',views.search,name='search'),
     re_path(r'^display',views.display,name='display'),
     # path('graph',views.graph,name='display'),
-    path(r'graph/<int:ID>', graph)
+    path(r'graph/<str:title>', views.graph,name="graph")
 ]

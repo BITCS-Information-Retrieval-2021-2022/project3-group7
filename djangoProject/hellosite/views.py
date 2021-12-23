@@ -23,6 +23,11 @@ def display(request):
     else:
         post["sortByValue"]=0
     post["start"]=start
+    if int(start)<10:
+        post["previous"]=0
+    else:
+        post["previous"]=int(start)-10
+    post["next"]=int(start)+10
     total=10
     hit=[]
     hit.append({"Sid":"1","title":"Radio Propagation Characteristics for Short Range Body-Centric Wireless Communications","inCitiationsCount":5,"outCitiationsCount":8})
@@ -37,7 +42,12 @@ def display(request):
     json_post=json.dumps(post)
     # data=json.load(json_post)
     data=post
-    return render(request,'begin/display.html',{'total':post["hits"]['total'],'hits':post['hits']['hit'],'query':post['query']})
-def graph(request,ID):
-    return render(request,'begin/graph.html',{'ID':ID})
+    return render(request,'begin/display.html',{'next':post["next"],"previous":post["previous"],'type':'0','start':post["start"],'total':post["hits"]['total'],'hits':post['hits']['hit'],'query':post['query']})
+
+def graph(request,title):
+    post = {}
+    print(title)
+    post["type"] = "RetrievalNetwork"
+    post["title"]=title
+    return render(request,'begin/graph.html',{'title':title})
 

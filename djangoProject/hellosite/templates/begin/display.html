@@ -3,13 +3,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>display</title>
+    <title>Serach Result</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../static/css/main.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-
+        body{
+	{#width:150px;#}
+	{#height: 80px;#}
+	background-image:url("../../static/images/back.jpg");
+	{#background-attachment:fixed;#}
+	background-repeat: no-repeat;
+}
         .spacer {
             padding-top: 90px;
             padding-bottom: 40px
@@ -25,7 +31,18 @@
             width: 50%;
             margin: 0 auto;
         }
-
+        .paper_title{
+            font-family: "PingFang SC";
+            font-size: 19px;
+        }
+        .paper_ref{
+            font-family:"Times New Roman";
+            font-size: 19px;
+        }
+        .grpah_button{
+            font-family: "Helvetica Neue";
+            font-size: 17px;
+        }
         .p1 {
             font-family: "Times New Roman", Times, serif;
         }
@@ -49,25 +66,25 @@
 {##}
 {#  }#}
 {#</script>#}
-<body style="background:url('../../static/images/back.jpg') center">
+<body>
 {#onload="showvalf()"#}
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#" class="p1">Paper</a>
+            <a class="navbar-brand" href="search" class="p1" style="font-family: 'PingFang SC'">Paper Network</a>
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li><a href="{% url 'hellosite:hello' %}" class="p1">Home</a></li>
-                <li><a href="{% url 'hellosite:search' %}" class="p1">Search</a></li>
+{#                <li><a href="{% url 'hellosite:hello' %}" class="p1">Home</a></li>#}
+{#                <li><a href="{% url 'hellosite:search' %}" class="p1">Search</a></li>#}
             </ul>
         </div>
     </div>
 </nav>
 {#{% block content %}#}
-<header class="text-center text-white masthead">
+<header class="text-white masthead">
     <div class="container">
-        <div class="spacer_s"></div>
+{#        <div class="spacer_s"></div>#}
         <div class="row">
             <div>
                 <h2 class="p1"> Choose a paper to build a graph:</h2>
@@ -77,26 +94,60 @@
                 {#            <li class=\"list-group-item text-center>#}
                 {#                {{ query }}#}
                 {#            </li>#}
-{#                {% for hit in hits %}#}
-{#                    <div class="card">#}
-{#                        <h5 class="card-header">{{ }}</h5>#}
-{#                        <div class="card-body">#}
-{#                            <h5 class="card-title">Special title treatment</h5>#}
-{#                            <p class="card-text">With supporting text below as a natural lead-in to additional#}
-{#                                content.</p>#}
-{#                            <a href="#" class="btn btn-primary">Go somewhere</a>#}
+                {% for hit in hits %}
+                    <div class="card bg-info text-center " style="border-radius:10px;width: 60rem; margin: 0 auto;">
+                    <br>
+{#                        <br>#}
+                        <div class="card-header paper_title">
+                            {{ hit.title }}
+                        </div>
+                        <div class="card-body">
+{#                            <h5 class="card-title p1">Special title treatment</h5>#}
+                            <p class="card-text paper_ref">{{ hit.outCitiationsCount }} Citations , {{ hit.inCitiationsCount }} References</p>
+                            <a href="/graph/{{ hit.title }}" class="btn btn-primary grpah_button">Build A Graph!</a>
+                            <br>
+                            <br>
+                        </div>
+
+{#                        <div class="card-footer text-muted">#}
+{#                            2 days ago#}
 {#                        </div>#}
-{#                    </div>#}
-{#                {% endfor %}#}
+                    </div>
+                    <br>
+                            <br>
+                {% endfor %}
+
                 {#            {% for m in message %}#}
                 {#                <li class=\"list-group-item text-center>#}
                 {#                    <a href="/graph/{{ m }}">{{ m }}</a>#}
                 {#                </li>#}
                 {#            {% endfor %}#}
             </div>
+        <ul class="pager">
+
+            <li class="previous"><a href="display?wd={{ query }}&start={{ previous }}&type={{ type }}">&larr; Previous</a></li>
+            <li class="next"><a href="display?wd={{ query }}&start={{ next }}&type={{ type }}">Next &rarr;</a></li>
+        </ul>
         </div>
     </div>
 </header>
+<script>
+    function precious()
+    {
+        let start={{ start }};
+        let wd={{ query }};
+        let type={{ type }};
+        document.location.href = "display?start="+start-10+"&wd=" + wd +"&type="+type;
+    }
+    function next()
+    {
+        console.log("hahaha");
+         let start={{ start }};
+        let wd={{ query }};
+        let type={{ type }};
+        document.location.href = "display?start="+start+10+"&wd=" + wd +"&type="+type;
+    }
+</script>
 {#{% endblock content %}#}
 </body>
 </html>
