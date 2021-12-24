@@ -35,9 +35,10 @@ def retrievalNetworks():
     """
     There should be some methods to generate networks.
     """
-    query['hits'] = es.search(query)
-    res = db.search(query)
-    return json.dumps(res)
+    res = db.get_network(query)
+    json_data = json.dumps(res)
+    json_data = json_data.replace('Sid', 'id')
+    return json_data
 
 
 if __name__ == "__main__":
