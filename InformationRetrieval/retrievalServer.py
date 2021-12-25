@@ -37,7 +37,7 @@ def retrievalNetworks():
     """
     res = db.get_network(query)
     json_data = json.dumps(res)
-    json_data = json_data.replace('Sid', 'id')
+    json_data = json_data.replace('title', 'id')
     return json_data
 
 

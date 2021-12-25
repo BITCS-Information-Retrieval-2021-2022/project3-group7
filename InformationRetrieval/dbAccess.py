@@ -80,12 +80,12 @@ class DBAccess:
             in_nodes1, out_nodes1 = self.citation(query, center, '1')
             # 第二层
             for id1 in in_nodes1 + out_nodes1:
-                print("2", id1)
+                # print("2", id1)
                 node1 = self.doc.find_one({"Sid": id1}, {"_id": 0})
                 in_nodes2, out_nodes2 = self.citation(query, node1, '2')
                 # 第三层
                 for id2 in in_nodes2 + out_nodes2:
-                    print("3", id2)
+                    # print("3", id2)
                     node2 = self.doc.find_one({"Sid": id2}, {"_id": 0})
                     in_nodes3, out_nodes3 = self.citation(query, node2, '3')
         query['subgraph']['nodeCount'] = len(query['subgraph']['nodes'])
@@ -104,7 +104,7 @@ class DBAccess:
                     in_doc['size'] = PARM[layer]['size']
                     in_doc['group'] = math.floor(in_doc['importantValue'] * 5)
                     query['subgraph']['nodes'].append(in_doc)
-                    query['subgraph']['links'].append({"source": node['Sid'], "value": 1, "target": c_in})
+                    query['subgraph']['links'].append({"source": node['title'], "value": 1, "target": in_doc['title']})
         for c_out in node['outCitations']:
             out_doc = self.doc.find_one({"Sid": c_out}, {"_id": 0})
             if out_doc:
@@ -113,7 +113,7 @@ class DBAccess:
                     out_doc['size'] = PARM[layer]['size']
                     out_doc['group'] = math.floor(out_doc['importantValue'] * 5)
                     query['subgraph']['nodes'].append(out_doc)
-                    query['subgraph']['links'].append({"source": node['Sid'], "value": 1, "target": c_out})
+                    query['subgraph']['links'].append({"source": out_doc['title'], "value": 1, "target": node['title']})
         return in_nodes, out_nodes
 
 
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     }
     db.get_network(query)
     json_data = json.dumps(query, indent=2)
-    json_data = json_data.replace('Sid', 'id')
+    json_data = json_data.replace('title', 'id')
     print(json_data)
     with open('sub1.json', 'w') as f:
         f.write(json_data)
