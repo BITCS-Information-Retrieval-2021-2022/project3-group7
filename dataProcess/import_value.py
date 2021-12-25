@@ -10,8 +10,8 @@ def conf():
     conf = SparkConf().setAppName('IR').setMaster("local[*]")
     my_spark = SparkSession.builder \
         .config(conf=conf) \
-        .config("spark.mongodb.input.uri", "mongodb://182.92.1.145:27017/InformationRetrieval.citation00") \
-        .config("spark.mongodb.output.uri", "mongodb://182.92.1.145:27017/InformationRetrieval.citation00") \
+        .config("spark.mongodb.input.uri", "mongodb://182.92.1.145:27017/InformationRetrieval.citation_es") \
+        .config("spark.mongodb.output.uri", "mongodb://182.92.1.145:27017/InformationRetrieval.citation_es") \
         .config("spark.jars.packages", "org.mongodb.spark:mongo-spark-connector_2.12:3.0.1") \
         .getOrCreate()
 
@@ -26,7 +26,7 @@ def read_data(spark):
         spark.read
         .format('mongo')
         .option("database", 'InformationRetrieval')
-        .option("collection", 'citation00')
+        .option("collection", 'citation_es')
         .load()
     )
 
@@ -86,7 +86,7 @@ def addImportValue(col):
     client = MongoClient("mongodb://182.92.1.145:27017/")
     db_name = 'InformationRetrieval'
     db = client[db_name]
-    collection = db['test01']
+    collection = db['citation_es']
 
     for i in col:
         collection.update_one({'Sid': i[0]}, {'$set': {'importantValue': i[1]}})
