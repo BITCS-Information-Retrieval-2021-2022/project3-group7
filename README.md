@@ -331,6 +331,49 @@ Step6：得到各节点的重要性分数后，将其写入数据库。
 
 ### 1 检索系统搭建
 
+**检索系统搭建流程**
+
+*Step1*: 创建MongoDB的存放数据的view:
+
+```
+db.createView(
+    "papersView",
+    "papers",
+    [{$project: {
+        "Sid": 1,
+        "title": 1,
+        "year": 1,
+        "inCitationsCount": 1,
+        "outCitationsCount": 1,
+        "importantValue": 1}
+    }
+    ]
+)
+```
+
+*Step2*: 创建对应es的mapping:
+
+```
+curl -X DELETE localhost:9200/papers
+curl -H 'Content-Type: application/json' -X PUT 'localhost:9200/papers?pretty' -d'
+{
+    "mappings": {
+        "dynamic": "strict",
+        "properties": {
+            "Sid": {"type": "keyword", "index": false},
+            "title": {"type": "text"},
+            "year": {"type": "short"},
+            "inCitationsCount": {"type": "short", "index": false},
+            "outCitationsCount": {"type": "short", "index": false},
+            "importantValue": {"type": "double"}
+        }
+    }
+```
+
+*Step3*: 使用monstache将mongoDB和es建立连接（monstache的配置文件见代码文件），将mongoDB中的数据同步至es中。
+
+*Step4*: 构建一个flask服务，与前端进行连接，在收到前端的请求后，对请求进行解析并进行对应的检索和取数据操作。以检索RetrievalPapers为例，在得到检索关键词后，调用es的检索函数es.search进行检索，检索成功后，再前往mongoDB中查找数据，最后整理数据格式以json格式返回给前端。
+
 ### 2 引文网络子图
 
 **生成引文网络子图算法流程**
