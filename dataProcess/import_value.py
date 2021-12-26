@@ -2,7 +2,7 @@
 
 from pyspark import SparkContext, SparkConf, SQLContext
 from pyspark.sql import SparkSession
-from pymongo import *
+from pymongo import MongoClient
 
 
 # 配置
@@ -10,13 +10,18 @@ def conf():
     conf = SparkConf().setAppName('IR').setMaster("local[*]")
     my_spark = SparkSession.builder \
         .config(conf=conf) \
-        .config("spark.mongodb.input.uri", "mongodb://182.92.1.145:27017/InformationRetrieval.citation_es") \
-        .config("spark.mongodb.output.uri", "mongodb://182.92.1.145:27017/InformationRetrieval.citation_es") \
-        .config("spark.jars.packages", "org.mongodb.spark:mongo-spark-connector_2.12:3.0.1") \
+        .config(
+            "spark.mongodb.input.uri",
+            "mongodb://182.92.1.145:27017/InformationRetrieval.citation_es") \
+        .config(
+            "spark.mongodb.output.uri",
+            "mongodb://182.92.1.145:27017/InformationRetrieval.citation_es") \
+        .config(
+            "spark.jars.packages",
+            "org.mongodb.spark:mongo-spark-connector_2.12:3.0.1") \
         .getOrCreate()
 
     sql = SQLContext(my_spark)
-
     return my_spark, sql
 
 
@@ -65,7 +70,9 @@ def PageRank(list):
     for i in list:
         node.append(i[0])
 
-    pages = sc.parallelize(list).map(lambda x: (x[0], tuple(x[1]))).partitionBy(20).cache()
+    pages = sc.parallelize(list).map(
+        lambda x:
+        (x[0], tuple(x[1]))).partitionBy(20).cache()
 
     # 初始PR值为1
     links = sc.parallelize(node).map(lambda x: (x, 1.0))
@@ -89,7 +96,8 @@ def addImportValue(col):
     collection = db['citation_es']
 
     for i in col:
-        collection.update_one({'Sid': i[0]}, {'$set': {'importantValue': i[1]}})
+        collection.update_one({'Sid': i[0]},
+                              {'$set': {'importantValue': i[1]}})
     print('Over')
 
 
@@ -99,4 +107,3 @@ if __name__ == "__main__":
     list = read_data(spark)
     value_col = PageRank(list)
     addImportValue(value_col)
-
