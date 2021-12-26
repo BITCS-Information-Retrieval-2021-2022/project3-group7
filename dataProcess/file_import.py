@@ -17,4 +17,3 @@ for i in range(0, len(files)):
     print(file)
     fr = jsonlines.open(file, 'r')
     mycol.insert_many(fr, ordered=False, bypass_document_validation=True)
-
