@@ -207,7 +207,7 @@ sudo ./sbin/start-dfs.sh
 
 ### 4 Scala
 
-Step1：下载Spark安装包  https://spark.apache.org/downloads.html。
+Step1：下载Spark安装包 https://www.scala-lang.org/ 。
 
 Step2：使用xftp将安装包上传至/usr/local/src目录下并解压。
 
@@ -227,7 +227,7 @@ export PATH=$PATH:$SCALA_HOME/bin
 
 ### 5 Spark
 
-Step1：下载Spark安装包  https://www.scala-lang.org/。
+Step1：下载Spark安装包 https://spark.apache.org/downloads.html 。
 
 Step2：使用xftp将安装包上传至/usr/local/src目录下并解压。
 
@@ -331,7 +331,7 @@ Step6：得到各节点的重要性分数后，将其写入数据库。
 
 1. 因通过学生认证申请的阿里云服务器性能有限，且无更多机器使用资源，故只部署了单机单节点Spark。
 
-3. 计算完500个文档，构建部分引文网络。其中，以**Sid**为主键计算引文网络的主节点数为8196874，最大入度为111261，最大出度为5790。
+2. 计算完500个文档，构建部分引文网络。其中，以**Sid**为主键计算引文网络的主节点数为8196874，最大入度为111261，最大出度为5790。
 
 ## 二、检索模块
 
