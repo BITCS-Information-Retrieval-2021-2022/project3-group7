@@ -82,7 +82,7 @@
     </div>
 </nav>
 {#{% block content %}#}
-<header class="text-white masthead">
+<header class="text-center text-white masthead">
     <div class="container">
 {#        <div class="spacer_s"></div>#}
         <div class="row">
@@ -95,26 +95,30 @@
                 {#                {{ query }}#}
                 {#            </li>#}
                 {% for hit in hits %}
-                    <div class="card bg-info text-center " style="border-radius:10px;width: 60rem; margin: 0 auto;">
-                    <br>
+                    <div class="card bg-info text-center " style="border-radius:10px;width: 80rem; margin: 0 auto;">
+                    <a href="/graph/{{ hit.Sid }}">
+                        <br>
 {#                        <br>#}
                         <div class="card-header paper_title">
+
                             {{ hit.title }}
+
                         </div>
                         <div class="card-body">
 {#                            <h5 class="card-title p1">Special title treatment</h5>#}
-                            <p class="card-text paper_ref">{{ hit.outCitiationsCount }} Citations , {{ hit.inCitiationsCount }} References</p>
-                            <a href="/graph/{{ hit.title }}" class="btn btn-primary grpah_button">Build A Graph!</a>
-                            <br>
-                            <br>
-                        </div>
+                            <p class="card-text paper_ref">{{ hit.outCitationsCount }} Citations , {{ hit.inCitationsCount }} References</p>
+{#                            <a href="/graph/{{ hit.title }}" class="btn btn-primary grpah_button">Build A Graph!</a>#}
+{#                            <br>#}
+{#                            <br>#}
 
+                        </div>
+                    </a>
 {#                        <div class="card-footer text-muted">#}
 {#                            2 days ago#}
 {#                        </div>#}
                     </div>
                     <br>
-                            <br>
+{#                            <br>#}
                 {% endfor %}
 
                 {#            {% for m in message %}#}
@@ -131,23 +135,6 @@
         </div>
     </div>
 </header>
-<script>
-    function precious()
-    {
-        let start={{ start }};
-        let wd={{ query }};
-        let type={{ type }};
-        document.location.href = "display?start="+start-10+"&wd=" + wd +"&type="+type;
-    }
-    function next()
-    {
-        console.log("hahaha");
-         let start={{ start }};
-        let wd={{ query }};
-        let type={{ type }};
-        document.location.href = "display?start="+start+10+"&wd=" + wd +"&type="+type;
-    }
-</script>
 {#{% endblock content %}#}
 </body>
 </html>
