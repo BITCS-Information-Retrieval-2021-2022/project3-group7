@@ -1,25 +1,27 @@
 import pymongo
 from bson.objectid import ObjectId
 from settings import parameters
-import random
 import json
 import math
 
-PARM = {
+RULE = {
     "1": {
         "size": 10,
-        "value": 0.15,
-        "num": 25
+        "minValue": 0.15,
+        "maxNum": 25,
+        "proportionNum": 0.50
     },
     "2": {
         "size": 5,
-        "value": 0.30,
-        "num": 20
+        "minValue": 0.30,
+        "maxNum": 20,
+        "proportionNum": 0.30
     },
     "3": {
         "size": 2.5,
-        "value": 0.45,
-        "num": 15
+        "minValue": 0.45,
+        "maxNum": 15,
+        "proportionNum": 0.15
     }
 }
 
@@ -48,7 +50,7 @@ class DBAccess:
         res = []
         for id in idList:
             dbQuery = {"_id": id if isinstance(id, ObjectId) else ObjectId(id)}  # 获取ObjectId
-            res.append(self.doc.find_one(dbQuery))  # 返回_id对应的单个文档
+            res.append(self.doc.find_one(dbQuery), {"_id": 0})  # 返回_id对应的单个文档
         # res = self.reformatResult(res)
         query['hits']['hit'] = res
         return query
@@ -82,38 +84,58 @@ class DBAccess:
             for id1 in in_nodes1 + out_nodes1:
                 # print("2", id1)
                 node1 = self.doc.find_one({"Sid": id1}, {"_id": 0})
-                in_nodes2, out_nodes2 = self.citation(query, node1, '2')
-                # 第三层
-                for id2 in in_nodes2 + out_nodes2:
-                    # print("3", id2)
-                    node2 = self.doc.find_one({"Sid": id2}, {"_id": 0})
-                    in_nodes3, out_nodes3 = self.citation(query, node2, '3')
+                if node1:
+                    in_nodes2, out_nodes2 = self.citation(query, node1, '2')
+                    # 第三层
+                    for id2 in in_nodes2 + out_nodes2:
+                        # print("3", id2)
+                        node2 = self.doc.find_one({"Sid": id2}, {"_id": 0})
+                        if node2:
+                            in_nodes3, out_nodes3 = self.citation(query, node2, '3')
         query['subgraph']['nodeCount'] = len(query['subgraph']['nodes'])
         query['subgraph']['linksCount'] = len(query['subgraph']['links'])
         return query
 
-    # 获取某个文档的引用与被引
+    # 获取并筛选某个文档的引用与被引
     def citation(self, query, node, layer):
         in_nodes = []
         out_nodes = []
+        in_num_flag = True
+        out_num_flag = True
+        if node['inCitationsCount'] > RULE[layer]['maxNum']:
+            in_num_flag = False
+            in_num_res = RULE[layer]['maxNum'] + math.floor(
+                (node['inCitationsCount'] - RULE[layer]['maxNum']) * RULE[layer]['proportionNum'])
+        if node['outCitationsCount'] > RULE[layer]['maxNum']:
+            out_num_flag = False
+            out_num_res = RULE[layer]['maxNum'] + math.floor(
+                (node['outCitationsCount'] - RULE[layer]['maxNum']) * RULE[layer]['proportionNum'])
         for c_in in node['inCitations']:
-            in_doc = self.doc.find_one({"Sid": c_in}, {"_id": 0})
-            if in_doc:
-                if in_doc['importantValue'] > PARM[layer]['value'] and len(in_nodes) <= PARM[layer]['num']:
-                    in_nodes.append(c_in)
-                    in_doc['size'] = PARM[layer]['size']
-                    in_doc['group'] = math.floor(in_doc['importantValue'] * 5)
-                    query['subgraph']['nodes'].append(in_doc)
-                    query['subgraph']['links'].append({"source": node['title'], "value": 1, "target": in_doc['title']})
+            flag = True
+            if (not in_num_flag) and len(in_nodes) >= in_num_res:
+                flag = False
+            if flag:
+                in_doc = self.doc.find_one({"Sid": c_in}, {"_id": 0})
+                if in_doc:
+                    if in_doc['importantValue'] > RULE[layer]['minValue']:
+                        in_nodes.append(c_in)
+                        in_doc['size'] = RULE[layer]['size']
+                        in_doc['group'] = math.floor(in_doc['importantValue'] * 5)
+                        query['subgraph']['nodes'].append(in_doc)
+                        query['subgraph']['links'].append({"source": node['title'], "value": 1, "target": in_doc['title']})
         for c_out in node['outCitations']:
-            out_doc = self.doc.find_one({"Sid": c_out}, {"_id": 0})
-            if out_doc:
-                if out_doc['importantValue'] > PARM[layer]['value'] and len(out_nodes) <= PARM[layer]['num']:
-                    out_nodes.append(c_out)
-                    out_doc['size'] = PARM[layer]['size']
-                    out_doc['group'] = math.floor(out_doc['importantValue'] * 5)
-                    query['subgraph']['nodes'].append(out_doc)
-                    query['subgraph']['links'].append({"source": out_doc['title'], "value": 1, "target": node['title']})
+            flag = True
+            if (not out_num_flag) and len(out_nodes) >= out_num_res:
+                flag = False
+            if flag:
+                out_doc = self.doc.find_one({"Sid": c_out}, {"_id": 0})
+                if out_doc:
+                    if out_doc['importantValue'] > RULE[layer]['minValue'] and flag:
+                        out_nodes.append(c_out)
+                        out_doc['size'] = RULE[layer]['size']
+                        out_doc['group'] = math.floor(out_doc['importantValue'] * 5)
+                        query['subgraph']['nodes'].append(out_doc)
+                        query['subgraph']['links'].append({"source": out_doc['title'], "value": 1, "target": node['title']})
         return in_nodes, out_nodes
 
 
@@ -132,7 +154,7 @@ if __name__ == "__main__":
                   doc_name=parameters["papersDoc"])
     query = dict()
     query = {
-        "query": "f6370fe63ff9c7191335c3e5de8d4b6935ae1792",  # 选中中心论文的Sid
+        "query": "f6370fe63ff9c7191335c3e5de8d4b6935ae1792",  # 选中中心论文的Sid  f6370fe63ff9c7191335c3e5de8d4b6935ae1792
         "subgraph": {
             "nodeCount": 0,  # 子图节点个数
             "nodes": [],  # 子图节点列表
