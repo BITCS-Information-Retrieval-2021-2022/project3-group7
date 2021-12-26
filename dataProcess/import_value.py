@@ -71,7 +71,7 @@ def PageRank(list):
     links = sc.parallelize(node).map(lambda x: (x, 1.0))
 
     # 迭代
-    for i in range(0, 2):
+    for i in range(0, 10):
         rank = pages.join(links).flatMap(f)
         links = rank.reduceByKey(lambda x, y: x + y)
         links = links.mapValues(lambda x: 0.15 + 0.85 * x)
